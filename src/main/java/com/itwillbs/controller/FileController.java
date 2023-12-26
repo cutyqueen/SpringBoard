@@ -28,7 +28,7 @@ import net.coobird.thumbnailator.Thumbnails;
 @Controller
 public class FileController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(FileController.class);
+	private static final Logger logger = LoggerFactory.getLogger(FileController.class);	
 	
 	// http://localhost:8088/fileUpload
 	@RequestMapping(value = "/fileUpload",method = RequestMethod.GET)
@@ -127,33 +127,38 @@ public class FileController {
 		fileName = URLEncoder.encode(fileName,"UTF-8");
 		
 		//썸네일 처리 동작 ----------------------------------------------
-		int lastIdx = fileName.lastIndexOf("."); // 파일이름에서 .의 위치 찾음 - 확장자체크 - test.jpg
-		String tmpFileName = fileName.substring(0,lastIdx); //0부터 lastIdx까지 자르기  - test
+		// 1. 썸네일 파일 생성(폴더), 화면에 원본데이터 출력
+//		int lastIdx = fileName.lastIndexOf("."); // 파일이름에서 .의 위치 찾음 - 확장자체크 - test.jpg
+//		String tmpFileName = fileName.substring(0,lastIdx); //0부터 lastIdx까지 자르기  - test
 		
-		File thumbfile = new File("D:\\springupload\\thumb\\"+tmpFileName+".png");
+//		File thumbfile = new File("D:\\springupload\\thumb\\"+tmpFileName+".png");
 		
-		if(thumbfile.exists()) {
-			thumbfile.getParentFile().mkdirs();
-			Thumbnails.of(file).size(50, 50).outputFormat("png").toFile(thumbfile); // png파일 확장자 설정
+		if(file.exists()) {
+			
+//			thumbfile.getParentFile().mkdirs();
+//			Thumbnails.of(file).size(50, 50).outputFormat("png").toFile(thumbfile); // png파일 확장자 설정
+			
+			Thumbnails.of(file).size(50, 50).outputFormat("png").toOutputStream(out);
 		}
 		//썸네일 처리 동작 ----------------------------------------------
-		
+
 		// 다운로드 창의 형태로 다운로드 되도록 설정
-		response.setHeader("Cache-Control", "no-cache");
-		response.addHeader("Content-disposition", "attachment; fileName="+fileName);
+//		response.setHeader("Cache-Control", "no-cache");
+//		response.addHeader("Content-disposition", "attachment; fileName="+fileName);
 		
-		FileInputStream fis = new FileInputStream(file);
-		byte[] buffer = new byte[1024*8];
-		
-		int data = 0;
-		while( (data = fis.read(buffer)) != -1) {
-			out.write(buffer,0,data);
-		}
-		out.flush(); // 공백채워서 전달
-		
-		fis.close();
-		out.close();
+//		FileInputStream fis = new FileInputStream(file);
+//		byte[] buffer = new byte[1024*8];
+//		
+//		int data = 0;
+//		while( (data = fis.read(buffer)) != -1) {
+//			out.write(buffer,0,data);
+//		}
+//		out.flush(); // 공백채워서 전달
+//		
+//		fis.close();
+//		out.close();
 	}
+	
 	
 	
 	
